@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+    <!-- setter injection: 用property这种方式，调用setter -->
+    <!-- create user object: bob 21, scope默认singleton -->
+    <bean id="user" class="com.mercury.spring_ioc_demo.bean.User"> 
+    		<property name="name" value="bob"></property>
+    		<property name="age" value="21"></property>
+    </bean>
+    
+    <bean id="user1" class="com.mercury.spring_ioc_demo.bean.User"> 
+    		<property name="name" value="alex"></property>
+    		<property name="age" value="21"></property>
+    </bean>
+    
+    <!-- constructor injection: 调用constructor -->
+    <!-- immutable class -->
+    <bean id="person" class="com.mercury.spring_ioc_demo.bean.Person"> 
+    		<constructor-arg index="0" value="alice"></constructor-arg>
+    		<constructor-arg index="1" value="li"></constructor-arg>
+    		<constructor-arg index="2" value="30"></constructor-arg>
+    </bean>
+    
+    <bean id="wrapper" class="com.mercury.spring_ioc_demo.bean.Wrapper"> 
+    		<property name="user" ref="user"></property>
+    		<property name="person" ref="person"></property>
+    </bean>
+    
+    <!-- autowire(自动装配)：Spring自动检索
+    				no, 没有装配类型
+    				byType：找类型，问题是如果有两个一样的type，那就gg
+    				byName：找variable name
+    				constructor，按照构造函数装配 -->
+    <bean id="wrapper1" class="com.mercury.spring_ioc_demo.bean.Wrapper" autowire="byType"></bean>
+    
+    <!-- Singleton的情况下是错的，因为constructor是private，无法调用，必须加上factory-method，告诉Spring调用哪个方法可以获得这个对象 -->
+    <!-- <bean=id"s" class="..." factory-method="getInstance"></bean> -->
+</beans>
